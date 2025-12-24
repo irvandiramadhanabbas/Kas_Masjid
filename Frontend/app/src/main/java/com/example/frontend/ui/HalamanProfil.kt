@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.frontend.ui.ketua
+package com.example.frontend.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -141,7 +141,7 @@ fun HalamanProfil(
                     }
                     Box(
                         modifier = Modifier
-                            .padding(top = greenPanelHeight - avatarOverlap) // ✅ nempel di batas panel
+                            .padding(top = greenPanelHeight - avatarOverlap)
                             .size(avatarSize)
                             .zIndex(1f)
                             .border(2.dp, Color(0xFF9FB59B), CircleShape)

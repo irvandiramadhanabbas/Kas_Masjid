@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.*
 import com.example.frontend.data.model.Pengguna
 import com.example.frontend.navigation.Routes
+import com.example.frontend.ui.HalamanProfil
 import com.example.frontend.ui.HalamanTransaksi
 import com.example.frontend.ui.component.AppBottomBar
 import com.example.frontend.ui.ketua.sheet.ResetPasswordPengguna

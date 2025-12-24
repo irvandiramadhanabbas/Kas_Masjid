@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 fun ResetPasswordPengguna(
     bottomInset: Dp = 0.dp,
     onDismiss: () -> Unit,
-    onSubmit: suspend (String) -> Boolean // ✅ true kalau sukses update password
+    onSubmit: suspend (String) -> Boolean
 ) {
     var pass1 by remember { mutableStateOf("") }
     var pass2 by remember { mutableStateOf("") }
@@ -59,7 +59,6 @@ fun ResetPasswordPengguna(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     LaunchedEffect(Unit) { sheetState.expand() }
 
-    // ✅ supaya TopBanner bisa overlay di atas sheet
     Box(Modifier.fillMaxSize()) {
 
         ModalBottomSheet(
@@ -132,7 +131,6 @@ fun ResetPasswordPengguna(
                     icon = Icons.Default.Lock
                 )
 
-                // ✅ error merah (usecase gagal)
                 if (errorText != null) {
                     Spacer(Modifier.height(10.dp))
                     Text(
@@ -149,7 +147,6 @@ fun ResetPasswordPengguna(
                 Button(
                     enabled = !loading,
                     onClick = {
-                        // ✅ validasi lokal
                         if (pass1.length < 8 || pass2.length < 8) {
                             errorText = "Password minimal 8 karakter."
                             return@Button
@@ -161,13 +158,13 @@ fun ResetPasswordPengguna(
 
                         loading = true
                         scope.launch {
-                            val ok = onSubmit(pass1) // ✅ update ke DB (server)
+                            val ok = onSubmit(pass1)
                             loading = false
 
                             if (ok) {
                                 showSuccess = true
                                 delay(1200)
-                                onDismiss() // ✅ balik dashboard/home
+                                onDismiss()
                                 showSuccess = false
                             } else {
                                 errorText = "Gagal reset password. Coba lagi."
@@ -192,7 +189,6 @@ fun ResetPasswordPengguna(
             }
         }
 
-        // ✅ TOP BANNER NOTIF (kayak gambar kamu)
         if (showSuccess) {
             Dialog(
                 onDismissRequest = { },
@@ -206,7 +202,7 @@ fun ResetPasswordPengguna(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Transparent),
-                    contentAlignment = Alignment.Center   // ✅ tengah layar
+                    contentAlignment = Alignment.Center
                 ) {
                     AnimatedVisibility(
                         visible = showSuccess,

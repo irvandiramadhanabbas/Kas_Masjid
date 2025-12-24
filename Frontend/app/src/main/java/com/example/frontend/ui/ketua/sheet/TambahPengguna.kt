@@ -57,7 +57,6 @@ fun TambahPengguna(
         containerColor = Color(0xFFB1D0A7),
         shape = RoundedCornerShape(topStart = 80.dp, topEnd = 80.dp),
 
-        // ✅ ini yang bikin sheet ga nutup bottom nav
         modifier = Modifier.padding(bottom = bottomInset),
 
         dragHandle = {
@@ -71,20 +70,19 @@ fun TambahPengguna(
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
-                    ) { onDismiss() } // ⬅️ tap = close
+                    ) { onDismiss() }
             )
         }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 280.dp) // 🔥 sheet ditinggikan
+                .heightIn(min = 280.dp)
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 30.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            // ===== HEADER =====
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
@@ -107,7 +105,6 @@ fun TambahPengguna(
 
             Spacer(Modifier.height(20.dp))
 
-            // ===== INPUTS =====
             InputField(
                 value = username,
                 onValueChange = { username = it },
@@ -145,7 +142,6 @@ fun TambahPengguna(
 
             Spacer(Modifier.height(18.dp))
 
-            // ===== BUTTON =====
             Button(
                 onClick = {
                     if (
@@ -188,11 +184,11 @@ private fun InputField(
 
     Row(
         modifier = Modifier
-            .width(300.dp)          // Figma: 300
-            .height(42.dp)          // Figma: 42
+            .width(300.dp)
+            .height(42.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.White)
-            .padding(horizontal = 7.dp), // padding kecil seperti Figma
+            .padding(horizontal = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

@@ -52,7 +52,6 @@ fun UpdatePengguna(
         containerColor = Color(0xFFB1D0A7),
         shape = RoundedCornerShape(topStart = 80.dp, topEnd = 80.dp),
 
-        // ✅ sama persis kayak TambahPengguna
         modifier = Modifier.padding(bottom = bottomInset),
 
         dragHandle = {
@@ -79,7 +78,6 @@ fun UpdatePengguna(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            // ===== HEADER (sama) =====
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
@@ -102,7 +100,6 @@ fun UpdatePengguna(
 
             Spacer(Modifier.height(20.dp))
 
-            // ===== INPUTS (styling sama) =====
             InputFieldSimpleSameAsTambah(
                 value = username,
                 onValueChange = { username = it },
@@ -139,7 +136,6 @@ fun UpdatePengguna(
 
             Spacer(Modifier.height(18.dp))
 
-            // ===== BUTTON (sama) =====
             Button(
                 onClick = {
                     onSubmit(

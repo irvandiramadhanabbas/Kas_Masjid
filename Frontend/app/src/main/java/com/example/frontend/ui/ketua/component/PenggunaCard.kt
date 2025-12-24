@@ -96,14 +96,14 @@ fun PenggunaCard(
 
                 Column(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp) // ⬅️ jarak antar Text
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     Text(
                         text = user.username,
                         fontSize = 12.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.Normal,
-                        lineHeight = 14.sp, // ⬅️ penting
+                        lineHeight = 14.sp,
                         color = Color(0xFF000000),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -114,7 +114,7 @@ fun PenggunaCard(
                         fontSize = 10.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.Normal,
-                        lineHeight = 12.sp, // ⬅️ penting
+                        lineHeight = 12.sp,
                         color = Color(0x80000000),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -211,7 +211,7 @@ fun PenggunaCard(
                             DividerV()
                             ActionCell(
                                 modifier = Modifier.weight(1f),
-                                iconRes = R.drawable.reset, // icon update password
+                                iconRes = R.drawable.reset,
                                 text = "Update Password",
                                 onClick = {
                                     onCloseMenu()
@@ -223,7 +223,7 @@ fun PenggunaCard(
                         Row(Modifier.fillMaxWidth()) {
                             ActionCell(
                                 modifier = Modifier.weight(1f),
-                                iconRes = R.drawable.update, // icon update pengguna
+                                iconRes = R.drawable.update,
                                 text = "Update Pengguna",
                                 onClick = {
                                     onCloseMenu()
@@ -298,7 +298,7 @@ private fun ActionCell(
         Icon(
             painter = painterResource(iconRes),
             contentDescription = null,
-            tint = Color.Unspecified, // svg sudah berwarna
+            tint = Color.Unspecified,
             modifier = Modifier.size(16.dp)
         )
 

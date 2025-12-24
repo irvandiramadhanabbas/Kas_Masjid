@@ -12,8 +12,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.*
 import com.example.frontend.navigation.Routes
 import com.example.frontend.ui.HalamanLaporan
+import com.example.frontend.ui.HalamanProfil
 import com.example.frontend.ui.component.AppBottomBar
-import com.example.frontend.ui.ketua.HalamanProfil
 import com.example.frontend.ui.theme.SetSystemBars
 import com.example.frontend.viewmodel.BendaharaDashboardViewModel
 
