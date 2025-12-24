@@ -1,0 +1,26 @@
+# ===== Android / IntelliJ =====
+*.iml
+.gradle/
+**/.gradle/
+**/build/
+**/.idea/
+.idea/
+
+# Android specific
+local.properties
+/build
+/captures
+.externalNativeBuild/
+.cxx/
+
+# IntelliJ specific files
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# OS
+.DS_Store
+Thumbs.db
