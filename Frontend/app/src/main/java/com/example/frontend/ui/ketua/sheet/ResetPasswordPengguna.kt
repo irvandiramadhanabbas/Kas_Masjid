@@ -279,7 +279,6 @@ private fun PasswordField(
         IconButton(onClick = { visible = !visible }) {
             Icon(
                 modifier = Modifier.size(18.dp),
-                // ✅ FIX: kalau visible -> tampilkan icon "hide"
                 imageVector = if (visible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                 contentDescription = null,
                 tint = Color(0xFF000000)
