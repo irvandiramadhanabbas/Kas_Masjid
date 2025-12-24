@@ -2,15 +2,12 @@ import { Request, Response } from "express";
 import { db } from "../db";
 import bcrypt from "bcryptjs";
 
-// Email regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Role yang diijinkan
 const allowedRoles = ["KETUA", "BENDAHARA", "JAMAAH"] as const;
 
-// ======================================================
+
 // GET ALL USERS
-// ======================================================
 export async function tampilkanPengguna(req: Request, res: Response) {
   try {
     const [rows]: any = await db.query(
@@ -25,9 +22,7 @@ export async function tampilkanPengguna(req: Request, res: Response) {
   }
 }
 
-// ======================================================
 // CREATE USER
-// ======================================================
 export async function tambahPengguna(req: Request, res: Response) {
   let { username, email, password, role } = req.body as {
     username?: string;
@@ -48,14 +43,12 @@ export async function tambahPengguna(req: Request, res: Response) {
     return res.status(400).json({ message: "Password minimal 8 karakter" });
   }
 
-  // Normalisasi role ke uppercase
   role = role.toUpperCase();
   if (!allowedRoles.includes(role as any)) {
     return res.status(400).json({ message: "Role tidak valid" });
   }
 
   try {
-    // cek username unik
     const [u1]: any = await db.query(
       "SELECT id FROM pengguna WHERE username = ?",
       [username]
@@ -107,21 +100,18 @@ export async function updatePengguna(req: Request, res: Response) {
     return res.status(400).json({ message: "ID tidak valid" });
   }
 
-  // status optional, tapi kalau ada harus valid
   if (status && !["Aktif", "Nonaktif"].includes(status)) {
     return res.status(400).json({
       message: "Status harus 'Aktif' atau 'Nonaktif'",
     });
   }
 
-  // ketua tidak boleh menonaktifkan dirinya sendiri
   if (status === "Nonaktif" && (req as any).user?.id === id) {
     return res.status(400).json({
       message: "Ketua tidak dapat menonaktifkan akunnya sendiri",
     });
   }
 
-  // role optional, tapi kalau ada harus valid
   if (role) {
     role = role.toUpperCase();
     if (!allowedRoles.includes(role as any)) {
@@ -130,7 +120,6 @@ export async function updatePengguna(req: Request, res: Response) {
   }
 
   try {
-    // cek apakah user ada
     const [exists]: any = await db.query(
       "SELECT id FROM pengguna WHERE id = ?",
       [id]
@@ -139,13 +128,11 @@ export async function updatePengguna(req: Request, res: Response) {
       return res.status(404).json({ message: "Pengguna tidak ditemukan" });
     }
 
-    // Email wajib dicek validitas kalau dikirim
     if (email) {
       if (!emailRegex.test(email)) {
         return res.status(400).json({ message: "Format email tidak valid" });
       }
 
-      // email unik kecuali diri sendiri
       const [u2]: any = await db.query(
         "SELECT id FROM pengguna WHERE email = ? AND id <> ?",
         [email, id]
@@ -155,7 +142,6 @@ export async function updatePengguna(req: Request, res: Response) {
       }
     }
 
-    // username unik kecuali diri sendiri
     if (username) {
       const [u1]: any = await db.query(
         "SELECT id FROM pengguna WHERE username = ? AND id <> ?",
@@ -166,7 +152,6 @@ export async function updatePengguna(req: Request, res: Response) {
       }
     }
 
-    // 🔥 Build dynamic update query
     const fields: string[] = [];
     const values: any[] = [];
 
@@ -214,9 +199,7 @@ export async function updatePengguna(req: Request, res: Response) {
   }
 }
 
-// ======================================================
 // RESET PASSWORD
-// ======================================================
 export async function resetpasswordPengguna(req: Request, res: Response) {
   const id = Number(req.params.id);
   const { newPassword } = req.body as { newPassword?: string };
@@ -255,9 +238,7 @@ export async function resetpasswordPengguna(req: Request, res: Response) {
   }
 }
 
-// ======================================================
 // DELETE USER
-// ======================================================
 export async function hapusPengguna(req: Request, res: Response) {
   const id = Number(req.params.id);
 
@@ -265,7 +246,6 @@ export async function hapusPengguna(req: Request, res: Response) {
     return res.status(400).json({ message: "ID tidak valid" });
   }
 
-  // Ketua tidak boleh menghapus dirinya sendiri
   if ((req as any).user && (req as any).user.id === id) {
     return res
       .status(400)
@@ -273,7 +253,6 @@ export async function hapusPengguna(req: Request, res: Response) {
   }
 
   try {
-    // Cek apakah user punya transaksi
     const [trxRows]: any = await db.query(
       "SELECT COUNT(*) AS total FROM transaksi WHERE pengguna_id = ?",
       [id]

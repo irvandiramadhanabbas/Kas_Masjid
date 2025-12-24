@@ -3,7 +3,6 @@ import {
   tampilkanPengguna,
   tambahPengguna,
   updatePengguna,
-  // updateUserStatus,
   resetpasswordPengguna,
   hapusPengguna,
 } from "../controllers/userController";
@@ -13,7 +12,6 @@ const router = Router();
 router.get("/", tampilkanPengguna);
 router.post("/", tambahPengguna);
 router.put("/:id", updatePengguna);
-//router.patch("/:id/status", updateUserStatus);
 router.patch("/:id/reset-password", resetpasswordPengguna);
 router.delete("/:id", hapusPengguna);
 

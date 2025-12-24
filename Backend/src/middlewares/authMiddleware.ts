@@ -45,7 +45,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   }
 }
 
-// middleware tambahan untuk batasi role
 export function requireRole(...roles: RoleName[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {

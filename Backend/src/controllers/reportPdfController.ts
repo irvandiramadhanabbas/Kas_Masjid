@@ -52,11 +52,9 @@ export async function eksporpdf(req: Request, res: Response) {
       [startDate, endDate]
     );
 
-    // ========== 3. Buat PDF ==========
     const doc = new PDFDocument({
       size: "A4",
       margin: 40,
-      // layout: "landscape" // kalau mau lebih lebar
     });
 
     res.setHeader("Content-Type", "application/pdf");
@@ -66,7 +64,6 @@ export async function eksporpdf(req: Request, res: Response) {
     );
     doc.pipe(res);
 
-    // ===== Helpers =====
     const fmtRupiah = (n: number) => `Rp ${Number(n || 0).toLocaleString("id-ID")}`;
 
     const page = () => ({
@@ -85,14 +82,12 @@ export async function eksporpdf(req: Request, res: Response) {
       }
     };
 
-    // ===== Header dokumen =====
     doc.font("Helvetica-Bold").fontSize(16).text("LAPORAN KAS MASJID", { align: "center" });
     doc.moveDown(0.3);
     doc.font("Helvetica").fontSize(11).fillColor("#333333")
       .text(`Periode: ${startDate} s/d ${endDate}`, { align: "center" });
     doc.moveDown(1);
 
-    // ===== Box Ringkasan =====
     const { left, right, width } = page();
     const boxX = left;
     const boxW = width;
@@ -116,7 +111,6 @@ export async function eksporpdf(req: Request, res: Response) {
 
     doc.y = boxY + boxH + 16;
 
-    // ===== Judul tabel =====
     doc.font("Helvetica-Bold").fontSize(12).fillColor("#111111")
       .text("Daftar Transaksi");
     doc.moveDown(0.5);
@@ -128,10 +122,9 @@ export async function eksporpdf(req: Request, res: Response) {
       kategori: 120,
       nominal: 90,
       dicatat: 90,
-      ket: 0, // sisanya
+      ket: 0,
     };
 
-    // hitung sisa untuk keterangan
     const tableX = left;
     const tableW = width;
     col.ket = tableW - (col.tanggal + col.jenis + col.kategori + col.nominal + col.dicatat);
@@ -214,7 +207,6 @@ export async function eksporpdf(req: Request, res: Response) {
       doc.y += rowH;
     };
 
-    // ===== Render table =====
     drawTableHeader();
 
     if (!trxRows || trxRows.length === 0) {
@@ -225,7 +217,6 @@ export async function eksporpdf(req: Request, res: Response) {
       trxRows.forEach((row: any) => drawTableRow(row));
     }
 
-    // ===== Footer (opsional) =====
     doc.moveDown(1);
     doc.fontSize(9).fillColor("#666666")
       .text(`Dicetak pada: ${new Date().toLocaleString("id-ID")}`, { align: "right" });

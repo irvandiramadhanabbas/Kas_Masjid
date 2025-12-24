@@ -13,7 +13,6 @@ export async function tampilkanLaporan(req: Request, res: Response) {
     });
   }
 
-  // (opsional) cek urutan tanggal
   if (startDate > endDate) {
     return res.status(400).json({
       message: "startDate tidak boleh lebih besar dari endDate",
@@ -21,7 +20,6 @@ export async function tampilkanLaporan(req: Request, res: Response) {
   }
 
   try {
-    // ========== 1. Ringkasan pemasukan & pengeluaran di periode ==========
     const [summaryRows]: any = await db.query(
       `
       SELECT
@@ -37,7 +35,6 @@ export async function tampilkanLaporan(req: Request, res: Response) {
     const totalPengeluaran = Number(summaryRows[0].totalPengeluaran) || 0;
     const saldoPeriode = totalPemasukan - totalPengeluaran;
 
-    // ========== 2. Daftar transaksi di periode ==========
     const [trxRows]: any = await db.query(
       `
       SELECT

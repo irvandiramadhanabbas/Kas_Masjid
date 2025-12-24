@@ -9,7 +9,6 @@ import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-// semua yang akses kategori harus login dulu
 router.use(authMiddleware);
 
 // semua yang login boleh lihat daftar kategori

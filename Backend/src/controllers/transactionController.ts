@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
 
-// Hitung saldo saat ini
 async function HitungSaldo(excludeId?: number): Promise<number> {
   let sql = `
     SELECT COALESCE(SUM(
@@ -23,9 +22,7 @@ async function HitungSaldo(excludeId?: number): Promise<number> {
   return Number(rows[0].saldo) || 0;
 }
 
-// ============================================
-// GET /transactions (filter riwayat)
-// ============================================
+// GET /transactions
 export async function tampilkanTransaksi(req: Request, res: Response) {
   console.log("CONTROLLER HIT ✅ tampilkanTransaksi");
   const { startDate, endDate, jenis, kategoriId } = req.query;
@@ -87,9 +84,7 @@ export async function tampilkanTransaksi(req: Request, res: Response) {
   }
 }
 
-// ============================================
 // POST /transactions
-// ============================================
 export async function tambahTransaksi(req: Request, res: Response) {
   let { tglTransaksi, jenis, kategoriId, keterangan, nominal } = req.body;
 
@@ -97,7 +92,6 @@ export async function tambahTransaksi(req: Request, res: Response) {
     return res.status(400).json({ message: "Data transaksi tidak lengkap" });
   }
 
-  // normalisasi & validasi jenis
   jenis = String(jenis).toUpperCase();
   if (jenis !== "PEMASUKAN" && jenis !== "PENGELUARAN") {
     return res.status(400).json({
@@ -106,7 +100,6 @@ export async function tambahTransaksi(req: Request, res: Response) {
   }
 
   try {
-    // cek kategori
     const [catRows]: any = await db.query(
       "SELECT id FROM kategori WHERE id = ?",
       [kategoriId]
@@ -115,7 +108,6 @@ export async function tambahTransaksi(req: Request, res: Response) {
       return res.status(400).json({ message: "Kategori tidak ditemukan" });
     }
 
-    // cek saldo jika pengeluaran
     if (jenis === "PENGELUARAN") {
       const saldo = await HitungSaldo();
       if (nominal > saldo) {
@@ -126,7 +118,7 @@ export async function tambahTransaksi(req: Request, res: Response) {
       }
     }
 
-    const userId = (req as any).user.id; // dari middleware auth
+    const userId = (req as any).user.id;
 
     const [result]: any = await db.query(
       `
@@ -152,9 +144,7 @@ export async function tambahTransaksi(req: Request, res: Response) {
   }
 }
 
-// ============================================
 // PUT /transactions/:id
-// ============================================
 export async function updateTransaksi(req: Request, res: Response) {
   const id = Number(req.params.id);
   let { tglTransaksi, jenis, kategoriId, keterangan, nominal } = req.body;
@@ -167,7 +157,6 @@ export async function updateTransaksi(req: Request, res: Response) {
     return res.status(400).json({ message: "Data transaksi tidak lengkap" });
   }
 
-  // normalisasi & validasi jenis
   jenis = String(jenis).toUpperCase();
   if (jenis !== "PEMASUKAN" && jenis !== "PENGELUARAN") {
     return res.status(400).json({
@@ -193,7 +182,6 @@ export async function updateTransaksi(req: Request, res: Response) {
       return res.status(400).json({ message: "Kategori tidak ditemukan" });
     }
 
-    // hitung saldo tanpa transaksi ini
     const saldoTanpaIni = await HitungSaldo(id);
     const efekBaru = jenis === "PEMASUKAN" ? nominal : -nominal;
 
@@ -225,41 +213,3 @@ export async function updateTransaksi(req: Request, res: Response) {
     return res.status(500).json({ message: "Server error" });
   }
 }
-
-// ============================================
-// DELETE /transactions/:id
-// ============================================
-/*export async function hapusTransaction(req: Request, res: Response) {
-  const id = Number(req.params.id);
-
-  if (!id || Number.isNaN(id)) {
-    return res.status(400).json({ message: "ID tidak valid" });
-  }
-
-  try {
-    const [trxRows]: any = await db.query(
-      "SELECT * FROM transaksi WHERE id = ?",
-      [id]
-    );
-
-    if (trxRows.length === 0) {
-      return res.status(404).json({ message: "Transaksi tidak ditemukan" });
-    }
-
-    // saldo setelah hapus = saldo tanpa transaksi ini
-    const saldoSetelahHapus = await getCurrentBalance(id);
-
-    if (saldoSetelahHapus < 0) {
-      return res.status(400).json({
-        message: "Saldo tidak boleh negatif",
-      });
-    }
-
-    await db.query("DELETE FROM transaksi WHERE id = ?", [id]);
-
-    return res.json({ message: "Transaksi berhasil dihapus" });
-  } catch (err) {
-    console.error("deleteTransaction error:", err);
-    return res.status(500).json({ message: "Server error" });
-  }
-}*/

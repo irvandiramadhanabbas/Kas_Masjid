@@ -15,6 +15,5 @@ router.get("/", tampilkanTransaksi);
 // hanya BENDAHARA yang boleh input/edit/hapus transaksi
 router.post("/", requireRole("BENDAHARA"), tambahTransaksi);
 router.put("/:id", requireRole("BENDAHARA"), updateTransaksi);
-//router.delete("/:id", requireRole("BENDAHARA"), hapusTransaction);
 
 export default router;

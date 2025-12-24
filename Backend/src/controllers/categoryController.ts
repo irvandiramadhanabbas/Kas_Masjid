@@ -26,7 +26,6 @@ export async function tambahKategori(req: Request, res: Response) {
   }
 
   try {
-    // cek duplikasi
     const [exists]: any = await db.query(
       "SELECT id FROM kategori WHERE nama = ?",
       [nama.trim()]
@@ -51,7 +50,7 @@ export async function tambahKategori(req: Request, res: Response) {
   }
 }
 
-// PUT /kategori/:id
+
 export async function updateKategori(req: Request, res: Response) {
   const id = Number(req.params.id);
   const { nama } = req.body;
@@ -74,7 +73,6 @@ export async function updateKategori(req: Request, res: Response) {
       return res.status(404).json({ message: "Kategori tidak ditemukan" });
     }
 
-    // cek duplikasi selain dirinya
     const [dupe]: any = await db.query(
       "SELECT id FROM kategori WHERE nama = ? AND id <> ?",
       [nama.trim(), id]
@@ -105,7 +103,6 @@ export async function hapusKategori(req: Request, res: Response) {
   }
 
   try {
-    // cek apakah kategori dipakai di transaksi
     const [trx]: any = await db.query(
       "SELECT COUNT(*) AS total FROM transaksi WHERE kategori_id = ?",
       [id]
