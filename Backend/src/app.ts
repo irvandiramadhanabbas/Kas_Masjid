@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRoutes);
 
 // protected routes - khusus KETUA
-app.use("/users", authMiddleware, requireRole("KETUA"), userRoutes);
+app.use("/users", userRoutes);
 
 // kategori:
 // - semua user yang login boleh GET (lihat daftar kategori)
